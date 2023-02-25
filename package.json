@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@webcontainer/api": "^1.0.2",
+    "ansi-to-html": "^0.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
