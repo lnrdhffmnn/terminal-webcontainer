@@ -2,6 +2,7 @@ import "./style.css";
 import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { WebContainer } from "@webcontainer/api";
+import { FitAddon } from "xterm-addon-fit";
 
 const terminalElement = document.querySelector<HTMLDivElement>("#terminal")!;
 const terminal = new Terminal({
@@ -9,11 +10,27 @@ const terminal = new Terminal({
   cursorBlink: true,
   tabStopWidth: 2,
 });
+const fitAddon = new FitAddon();
 
+terminal.loadAddon(fitAddon);
 terminal.open(terminalElement);
+fitAddon.fit();
 
 const webContainer = await WebContainer.boot();
-const shell = await webContainer.spawn("jsh");
+const shell = await webContainer.spawn("jsh", {
+  terminal: {
+    cols: terminal.cols,
+    rows: terminal.rows,
+  },
+});
+
+window.addEventListener("resize", () => {
+  fitAddon.fit();
+  shell.resize({
+    cols: terminal.cols,
+    rows: terminal.rows,
+  });
+});
 
 shell.output.pipeTo(
   new WritableStream({
