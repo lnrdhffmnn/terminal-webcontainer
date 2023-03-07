@@ -3,6 +3,7 @@ import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { WebContainer } from "@webcontainer/api";
 import { FitAddon } from "xterm-addon-fit";
+import { WebLinksAddon } from "xterm-addon-web-links";
 
 const terminalElement = document.querySelector<HTMLDivElement>("#terminal")!;
 const terminal = new Terminal({
@@ -11,8 +12,10 @@ const terminal = new Terminal({
   tabStopWidth: 2,
 });
 const fitAddon = new FitAddon();
+const webLinksAddon = new WebLinksAddon();
 
 terminal.loadAddon(fitAddon);
+terminal.loadAddon(webLinksAddon);
 terminal.open(terminalElement);
 fitAddon.fit();
 
